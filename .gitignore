@@ -1,0 +1,14 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Archivos de compilación
+target/
+out/
+
+# Archivos de log
+*.log
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
