@@ -19,45 +19,41 @@ public class Player extends MovingObject{
     private final double DELTAANGLE = 0.1;
     private  boolean accelerating = false;
 
-    private GameState gameState;
-    private  long time, lastTime;
+    private Chronometer fireRate;
 
     public Player(Vector2D position, Vector2D velocity, double maxVel, BufferedImage texture, GameState gameState) {
-        super(position, velocity, maxVel, texture);
-        this.gameState = gameState;
+        super(position, velocity, maxVel, texture, gameState);
         heading = new Vector2D(0,1);
         acceleration = new Vector2D();
-        time = 0;
-        lastTime = System.currentTimeMillis();
+        fireRate = new Chronometer();
     }
     @Override
     public void update() {
-        time += System.currentTimeMillis() - lastTime;
-        lastTime = System.currentTimeMillis();
 
-        if (KeyBoard.SHOOT && time > 100) {
+        if (KeyBoard.SHOOT && !fireRate.isRunning()) {
             gameState.getMovingObjects().add(0,new Laser(
                     getCenter().add(heading.scale(width)),
                     heading,
-                    10,
+                    Constants.LASER_VEL,
                     angle,
-                    Assets.redLaser
+                    Assets.redLaser,
+                    gameState
             ));
-            time = 0;
+            fireRate.run(Constants.FIRERATE);
         }
 
         if (KeyBoard.RIGHT) {
-            angle += DELTAANGLE;
+            angle += Constants.DELTAANGLE;
         }
         if (KeyBoard.LEFT) {
-            angle -= DELTAANGLE;
+            angle -= Constants.DELTAANGLE;
         }
         if (KeyBoard.UP) {
-            acceleration = heading.scale(ACC);
+            acceleration = heading.scale(Constants.ACC);
             accelerating = true;
         }else {
             if (velocity.getMagnitude() != 0) {
-                acceleration = (velocity.scale(-1).normalize().scale(ACC / 2));
+                acceleration = (velocity.scale(-1).normalize()).scale( Constants.ACC / 2);
                 accelerating = false;
             }
         }
@@ -95,8 +91,7 @@ public class Player extends MovingObject{
         } else if (position.getY() > Constants.HEIGHT) {
             position.setY(-spriteH);
         }
-
-
+        fireRate.update();
     }
     @Override
     public void draw(Graphics g) {

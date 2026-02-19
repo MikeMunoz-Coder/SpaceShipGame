@@ -35,7 +35,6 @@ public class Window extends JFrame implements Runnable{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         setLocationRelativeTo(null);
-        setVisible(true);
 
         canvas = new Canvas();
         keyBoard = new KeyBoard();
@@ -47,6 +46,7 @@ public class Window extends JFrame implements Runnable{
 
         add(canvas);
         canvas.addKeyListener(keyBoard);
+        setVisible(true);
     }
 
     private void update () {

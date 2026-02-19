@@ -24,6 +24,8 @@ public class GameState {
         }
     }
     public void draw(Graphics g){
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         for (int i = 0; i < movingObjects.size(); i++) {
             movingObjects.get(i).draw(g);
         }
