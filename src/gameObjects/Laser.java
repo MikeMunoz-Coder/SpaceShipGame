@@ -20,8 +20,9 @@ public class Laser extends MovingObject {
         position = position.add(velocity);
         if (position.getX() < 0 || position.getX() > Constants.WIDTH ||
           position.getY() < 0 || position.getY() > Constants.HEIGHT) {
-          gameState.getMovingObjects().remove(this);
+          Destroy();
         }
+        collidesWidth();
     }
 
     @Override
@@ -30,5 +31,9 @@ public class Laser extends MovingObject {
         at = AffineTransform.getTranslateInstance(position.getX() - width/2, position.getY());
         at.rotate(angle, width/2,0);
         g2d.drawImage(texture,at,null);
+    }
+    @Override
+    protected Vector2D getCenter() {
+        return new Vector2D(position.getX() + width/2, position.getY() + width/2);
     }
 }

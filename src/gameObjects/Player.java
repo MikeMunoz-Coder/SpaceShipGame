@@ -92,6 +92,7 @@ public class Player extends MovingObject{
             position.setY(-spriteH);
         }
         fireRate.update();
+        collidesWidth();
     }
     @Override
     public void draw(Graphics g) {

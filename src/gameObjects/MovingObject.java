@@ -5,6 +5,7 @@ import states.GameState;
 
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public abstract class MovingObject extends GameObject{
 
@@ -26,5 +27,30 @@ public abstract class MovingObject extends GameObject{
         height = texture.getHeight();
         angle = 0;
     }
+    protected void collidesWidth() {
+        ArrayList<MovingObject> movingObjects = gameState.getMovingObjects();
 
+        for (int i = 0; i < movingObjects.size(); i++) {
+            MovingObject m = movingObjects.get(i);
+            if (m.equals(this)) {
+                continue;
+            }
+            double distance = m.getCenter().subtract(getCenter()).getMagnitude();
+            if (distance < m.width/2 + width/2 && movingObjects.contains(this)){
+                objectCollision(m, this);
+            }
+        }
+    }
+    private void objectCollision(MovingObject a, MovingObject b) {
+        if(!(a instanceof Meteor && b instanceof Meteor)) {
+            a.Destroy();
+            b.Destroy();
+        }
+    }
+    protected void Destroy() {
+        gameState.getMovingObjects().remove(this);
+    }
+    protected Vector2D getCenter() {
+        return new Vector2D(position.getX() + width/2, position.getY() + height/2);
+    }
 }
