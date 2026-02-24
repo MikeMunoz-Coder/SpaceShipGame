@@ -1,6 +1,7 @@
 package states;
 
 import gameObjects.*;
+import graphics.Animation;
 import graphics.Assets;
 import math.Vector2D;
 
@@ -12,6 +13,8 @@ public class GameState {
     private Player player;
     private ArrayList<MovingObject> movingObjects = new ArrayList<MovingObject>();
     private int meteore;
+
+    private ArrayList<Animation> explotions = new ArrayList<Animation>();
 
 
     public GameState() {
@@ -67,10 +70,25 @@ public class GameState {
         }
         meteore ++;
     }
+    public void playExplosion(Vector2D position) {
+        explotions.add(new Animation(
+                Assets.exp,
+                50,
+                position.subtract(new Vector2D(Assets.exp[0].getWidth()/2,
+                        Assets.exp[0].getHeight()/2))
+        ));
+    }
 
     public void update(){
         for (int i = 0; i < movingObjects.size(); i++) {
             movingObjects.get(i).update();
+        }
+        for (int i = 0; i < explotions.size(); i++) {
+            Animation anim = explotions.get(i);
+            anim.update();
+            if (!anim.isRunning()) {
+                explotions.remove(i);
+            }
         }
         for (int i = 0; i < movingObjects.size(); i++) {
             if (movingObjects.get(i)instanceof Meteor) {
@@ -84,6 +102,10 @@ public class GameState {
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         for (int i = 0; i < movingObjects.size(); i++) {
             movingObjects.get(i).draw(g);
+        }
+        for (int i = 0; i < explotions.size(); i++) {
+            Animation anim = explotions.get(i);
+            g2d.drawImage(anim.getCurrentFrame(), (int)anim.getPosition().getX(), (int)anim.getPosition().getY(),null);
         }
     }
 

@@ -10,6 +10,9 @@ public class Assets {
     // effects
     public static BufferedImage speed;
 
+    // explosions
+    public static BufferedImage[] exp = new BufferedImage[9];
+
     // Meteors
     public static BufferedImage[] bigs = new BufferedImage[4];
     public static BufferedImage[] meds = new BufferedImage[2];
@@ -35,6 +38,9 @@ public class Assets {
         }
         for (int i = 0; i < tinies.length; i++) {
             tinies[i] = Loader.ImageLoader("/meteors/tiny" + (i+1)+ ".png");
+        }
+        for (int i = 0; i < exp.length; i++) {
+            exp[i] = Loader.ImageLoader("/explosion/" +i+ ".png");
         }
     }
 }
